@@ -1,0 +1,25 @@
+DESCRIPTION="Secure Realtime Transport Protocol library"
+HOMEPAGE="http://srtp.sourceforge.net/"
+SRC_URI="mirror://sourceforge/srtp/${P}.tgz"
+PATCH_URI="1.4.4-cygwin-build.patch"
+SRC_DIR="srtp"
+
+PKG_NAMES="${PN} libsrtp1 libsrtp-devel"
+libsrtp1_CONTENTS="usr/bin/cygsrtp-1.dll usr/share/doc/"
+libsrtp_devel_CONTENTS="usr/include/ usr/lib"
+
+DIFF_EXCLUDES="Makefile config_in.h"
+
+src_compile() {
+	cd ${S}
+	cygautoreconf
+	cd ${B}
+	cygconf ac_cv_header_windows_h=no ac_cv_header_winsock2_h=no
+	cygmake libsrtp.a cygsrtp-1.dll
+}
+
+src_test() {
+	cd ${B}
+	export PATH="${B}/test:$PATH"
+	cygmake -j1 -k runtest
+}

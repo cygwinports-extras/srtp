@@ -1,0 +1,100 @@
+srtp
+------------------------------------------
+The libSRTP library is an open-source implementation of the Secure 
+Real-time Transport Protocol (SRTP) originally authored by Cisco 
+Systems, Inc. SRTP is a security profile for RTP that adds 
+confidentiality, message authentication, and replay protection to that 
+protocol. It is specified in RFC 3711.
+
+Runtime requirements:
+  cygwin-1.7.0-49
+  libgcc1-4.3.2-2
+
+Build requirements:
+(besides corresponding -devel packages)
+  autoconf2.5-2.63-10
+  binutils-20080624-2
+  cygport-0.9.6-1
+  gawk-3.1.6-2
+  gcc4-core-4.3.2-2
+  make-3.81-2
+  sed-4.1.5-2
+
+Canonical website:
+  http://srtp.sourceforge.net/
+
+Canonical download:
+  http://downloads.sourceforge.net/srtp/
+
+-------------------------------------------
+
+Build instructions:
+  unpack srtp-1.4.4-X-src.tar.bz2
+    if you use setup to install this src package, it will be
+	 unpacked under /usr/src automatically
+  cd /usr/src
+  cygport ./srtp-1.4.4-X.cygport all
+
+This will create:
+  /usr/src/libsrtp-devel-1.4.4-X.tar.bz2
+  /usr/src/libsrtp1-1.4.4-X.tar.bz2
+  /usr/src/srtp-1.4.4-X-src.tar.bz2
+
+-------------------------------------------
+
+Files included in the binary packages:
+
+(libsrtp1)
+  /usr/bin/cygsrtp-1.dll
+  /usr/share/doc/srtp/LICENSE
+  /usr/share/doc/srtp/README
+  /usr/share/doc/srtp/TODO
+
+(libsrtp-devel)
+  /usr/include/srtp/aes.h
+  /usr/include/srtp/aes_cbc.h
+  /usr/include/srtp/aes_icm.h
+  /usr/include/srtp/alloc.h
+  /usr/include/srtp/auth.h
+  /usr/include/srtp/cipher.h
+  /usr/include/srtp/config.h
+  /usr/include/srtp/crypto.h
+  /usr/include/srtp/crypto_kernel.h
+  /usr/include/srtp/crypto_math.h
+  /usr/include/srtp/crypto_types.h
+  /usr/include/srtp/cryptoalg.h
+  /usr/include/srtp/datatypes.h
+  /usr/include/srtp/err.h
+  /usr/include/srtp/getopt_s.h
+  /usr/include/srtp/gf2_8.h
+  /usr/include/srtp/hmac.h
+  /usr/include/srtp/integers.h
+  /usr/include/srtp/kernel_compat.h
+  /usr/include/srtp/key.h
+  /usr/include/srtp/null_auth.h
+  /usr/include/srtp/null_cipher.h
+  /usr/include/srtp/prng.h
+  /usr/include/srtp/rand_source.h
+  /usr/include/srtp/rdb.h
+  /usr/include/srtp/rdbx.h
+  /usr/include/srtp/rtp.h
+  /usr/include/srtp/rtp_priv.h
+  /usr/include/srtp/sha1.h
+  /usr/include/srtp/srtp.h
+  /usr/include/srtp/srtp_priv.h
+  /usr/include/srtp/stat.h
+  /usr/include/srtp/ut_sim.h
+  /usr/include/srtp/xfm.h
+  /usr/lib/libsrtp.a
+  /usr/lib/libsrtp.dll.a
+
+------------------
+
+Port Notes:
+
+----- version 1.4.4-1 -----
+Initial release for Cygwin 1.7.
+
+
+Cygwin port maintained by:
+http://sourceware.org/cygwinports/
