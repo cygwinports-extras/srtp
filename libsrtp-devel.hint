@@ -1,5 +1,5 @@
 category: Net
-requires: cygwin libsrtp1
+requires: libsrtp1
 external-source: srtp
 sdesc: "Secure Realtime Transport Protocol library (development)"
 ldesc: "The libSRTP library is an open-source implementation of the 
