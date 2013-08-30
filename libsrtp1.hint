@@ -1,9 +1,0 @@
-category: Net
-requires: libgcc1
-external-source: srtp
-sdesc: "Secure Realtime Transport Protocol library (runtime)"
-ldesc: "The libSRTP library is an open-source implementation of the 
-Secure Real-time Transport Protocol (SRTP) originally authored by Cisco 
-Systems, Inc. SRTP is a security profile for RTP that adds 
-confidentiality, message authentication, and replay protection to that 
-protocol. It is specified in RFC 3711."

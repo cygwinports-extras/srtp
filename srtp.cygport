@@ -1,0 +1,34 @@
+NAME="srtp"
+VERSION=1.4.4
+RELEASE=1
+CATEGORY="Libs"
+SUMMARY="Secure Realtime Transport Protocol library"
+DESCRIPTION="The libSRTP library is an open-source implementation of the
+Secure Real-time Transport Protocol (SRTP) originally authored by Cisco
+Systems, Inc. SRTP is a security profile for RTP that adds confidentiality,
+message authentication, and replay protection to that protocol. It is
+specified in RFC 3711."
+HOMEPAGE="http://srtp.sourceforge.net/"
+SRC_URI="mirror://sourceforge/srtp/srtp-${VERSION}.tgz"
+SRC_DIR="srtp"
+PATCH_URI="1.4.4-cygwin-build.patch"
+
+PKG_NAMES="libsrtp1 libsrtp-devel"
+libsrtp1_CONTENTS="usr/bin/cygsrtp-1.dll usr/share/doc/"
+libsrtp_devel_CONTENTS="usr/include/ usr/lib"
+
+DIFF_EXCLUDES="Makefile config_in.h"
+
+src_compile() {
+	cd ${S}
+	cygautoreconf
+	cd ${B}
+	cygconf ac_cv_header_windows_h=no ac_cv_header_winsock2_h=no
+	cygmake libsrtp.a cygsrtp-1.dll
+}
+
+src_test() {
+	cd ${B}
+	export PATH="${B}/test:$PATH"
+	cygmake -j1 -k runtest
+}
