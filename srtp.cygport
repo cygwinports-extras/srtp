@@ -32,3 +32,10 @@ src_test() {
 	export PATH="${B}/test:$PATH"
 	cygmake -j1 -k runtest
 }
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	rm -f ${D}/usr/lib/libsrtp.a
+}
