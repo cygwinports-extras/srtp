@@ -1,0 +1,46 @@
+--- origsrc/libsrtp-1.5.4/Makefile.in	2016-02-02 13:56:49.000000000 -0600
++++ src/libsrtp-1.5.4/Makefile.in	2017-12-19 01:20:11.821989500 -0600
+@@ -90,6 +90,11 @@ SHAREDLIB_DIR = $(libdir)
+ SHAREDLIB_LDFLAGS = -shared -Wl,-soname,$@
+ SHAREDLIBSUFFIXNOVER = so
+ SHAREDLIBSUFFIX = $(SHAREDLIBSUFFIXNOVER).$(SHAREDLIBVERSION)
++else ifeq (cygwin,$(findstring cygwin,@host@))
++SHAREDLIB_DIR = $(bindir)
++SHAREDLIB_LDFLAGS = -shared -Wl,--out-implib,libsrtp.dll.a
++SHAREDLIBSUFFIXNOVER = -$(SHAREDLIBVERSION).dll
++SHAREDLIBSUFFIX = $(SHAREDLIBSUFFIXNOVER)
+ else ifeq (mingw,$(findstring mingw,@host@))
+ SHAREDLIB_DIR = $(bindir)
+ SHAREDLIB_LDFLAGS = -shared -Wl,--out-implib,libsrtp.dll.a
+@@ -151,6 +156,10 @@ libsrtp.$(SHAREDLIBSUFFIX): $(srtpobj) $
+ 		ln -sfn $@ libsrtp.$(SHAREDLIBSUFFIXNOVER); \
+ 	fi
+ 
++cygsrtp$(SHAREDLIBSUFFIX): $(srtpobj) $(cryptobj) $(gdoi)
++	$(CC) -shared -o $@ $(SHAREDLIB_LDFLAGS) \
++                $^ $(LDFLAGS) $(LIBS)
++
+ shared_library: libsrtp.$(SHAREDLIBSUFFIX)
+ 
+ # libcryptomath.a contains general-purpose routines that are used to
+@@ -275,6 +284,10 @@ install:
+ 		cp libsrtp.$(SHAREDLIBSUFFIX) $(DESTDIR)$(SHAREDLIB_DIR)/; \
+ 		ln -sfn libsrtp.$(SHAREDLIBSUFFIX) $(DESTDIR)$(SHAREDLIB_DIR)/libsrtp.$(SHAREDLIBSUFFIXNOVER); \
+ 	fi
++	if [ -f cygsrtp$(SHAREDLIBSUFFIX) ]; then \
++		$(INSTALL) -d $(DESTDIR)$(SHAREDLIB_DIR); \
++		cp cygsrtp$(SHAREDLIBSUFFIX) $(DESTDIR)$(SHAREDLIB_DIR)/; \
++	fi
+ 	if [ "$(pkgconfig_DATA)" != "" ]; then \
+ 		$(INSTALL) -d $(DESTDIR)$(pkgconfigdir); \
+ 		cp $(top_builddir)/$(pkgconfig_DATA) $(DESTDIR)$(pkgconfigdir)/; \
+--- origsrc/libsrtp-1.5.4/configure.in	2016-02-02 13:56:49.000000000 -0600
++++ src/libsrtp-1.5.4/configure.in	2017-12-19 01:27:03.462573000 -0600
+@@ -35,7 +35,6 @@ dnl Check if we are on a Windows platfor
+ case $host_os in
+     *cygwin*|*mingw* ) 
+ 	EXE=.exe
+-	HOST_IS_WINDOWS=yes
+ 	;;
+     * )
+ 	EXE=""

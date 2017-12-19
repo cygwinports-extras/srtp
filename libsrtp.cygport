@@ -1,5 +1,5 @@
-NAME="srtp"
-VERSION=1.4.4
+NAME="libsrtp"
+VERSION=1.5.4
 RELEASE=1
 CATEGORY="Libs"
 SUMMARY="Secure Realtime Transport Protocol library"
@@ -8,14 +8,25 @@ Secure Real-time Transport Protocol (SRTP) originally authored by Cisco
 Systems, Inc. SRTP is a security profile for RTP that adds confidentiality,
 message authentication, and replay protection to that protocol. It is
 specified in RFC 3711."
-HOMEPAGE="http://srtp.sourceforge.net/"
-SRC_URI="mirror://sourceforge/srtp/srtp-${VERSION}.tgz"
-SRC_DIR="srtp"
-PATCH_URI="1.4.4-cygwin-build.patch"
+HOMEPAGE="https://github.com/cisco/libsrtp"
+SRC_URI="${HOMEPAGE}/archive/v${VERSION}/libsrtp-v${VERSION}.tar.gz"
+PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/rpms/libsrtp.git/plain/libsrtp-srtp_aes_encrypt.patch
+	http://pkgs.fedoraproject.org/cgit/rpms/libsrtp.git/plain/libsrtp-sha1-name-fix.patch
+	1.5.4-cygwin-build.patch
+	1.5.4-vpath.patch
+"
 
 PKG_NAMES="libsrtp1 libsrtp-devel"
-libsrtp1_CONTENTS="usr/bin/cygsrtp-1.dll usr/share/doc/"
-libsrtp_devel_CONTENTS="usr/include/ usr/lib"
+libsrtp1_CONTENTS="
+	usr/bin/cygsrtp-1.dll
+	usr/share/doc/
+"
+libsrtp_devel_CONTENTS="
+	usr/include/srtp/
+	usr/lib/libsrtp.dll.a
+	usr/lib/pkgconfig/libsrtp.pc
+"
 
 DIFF_EXCLUDES="Makefile config_in.h"
 
@@ -24,12 +35,12 @@ src_compile() {
 	cygautoreconf
 	cd ${B}
 	cygconf ac_cv_header_windows_h=no ac_cv_header_winsock2_h=no
-	cygmake libsrtp.a cygsrtp-1.dll
+	cygmake cygsrtp-1.dll
 }
 
 src_test() {
 	cd ${B}
-	export PATH="${B}/test:$PATH"
+	export PATH="${B}/test:${B}:$PATH"
 	cygmake -j1 -k runtest
 }
 
@@ -37,5 +48,6 @@ src_install() {
 	cd ${B}
 	cyginstall
 
+	# created by make test if not by make
 	rm -f ${D}/usr/lib/libsrtp.a
 }

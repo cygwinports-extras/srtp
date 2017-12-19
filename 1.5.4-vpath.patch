@@ -1,0 +1,11 @@
+--- origsrc/libsrtp-1.5.4/crypto/Makefile.in	2016-02-02 13:56:49.000000000 -0600
++++ src/libsrtp-1.5.4/crypto/Makefile.in	2017-12-19 01:31:44.783530300 -0600
+@@ -83,7 +83,7 @@ endif
+ 	$(COMPILE) -c $< -o $@
+ 
+ %$(EXE): %.c ../test/getopt_s.c
+-	$(COMPILE) $(LDFLAGS) $< ../test/getopt_s.c -o $@ $(CRYPTOLIB) $(LIBS)
++	$(COMPILE) $(LDFLAGS) $^ -o $@ $(CRYPTOLIB) $(LIBS)
+ 
+ all: $(testapp)
+ 
